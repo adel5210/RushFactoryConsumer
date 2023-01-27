@@ -1,1 +1,24 @@
-
+kafka:
+  user: YWxsb3dpbmctaHVtcGJhY2stMTQ0Mzckdoh_8EB2pTaLF3Ceo-XjVLXeTWEIMaA
+  password: a83fa81293e64a1588b0db313cb78ed9
+  topic: RUSH_FACTORY_TOPIC1
+spring:
+  application:
+    name: rush-consumer
+  kafka:
+    bootstrap-servers: allowing-humpback-14437-us1-kafka.upstash.io:9092
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: SCRAM-SHA-256
+      sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="${kafka.user}" password="${kafka.password}";
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        isolation.level: read_committed
+      enable-auto-commit: false
+server:
+  port: 8070
+logging:
+  pattern.console: "%clr(%d{HH:mm:ss.SSS}){blue} %clr(---){faint} %clr([%15.15t]){yellow} %clr(:){red} %clr(%m){faint}%n"
